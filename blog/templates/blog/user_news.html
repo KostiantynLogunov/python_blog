@@ -1,0 +1,60 @@
+{% extends 'blog/main.html' %}
+
+{% block main_section %}
+
+    <h2>All post from author: {{ view.kwargs.username }} </h2>
+    <h4>Count: {{ page_obj.paginator.count }}</h4>
+    {% for post in news %}
+        <div class="alert alert-light">
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.text | striptags | truncatechars:222 }}</p>
+            <div class="row">
+                <div>
+                    {% if post.author.profile.img %}
+                        <img src="{{ post.author.profile.img.url }}" alt="{{ post.author }}" class="user_image">
+                     {% else %}
+                        <img src="/pictures/default.jpg" alt="{{ post.author }}" class="user_image">
+                    {% endif %}
+                </div>
+                <div class="mt-2">
+                    <span class="text-muted">{{ post.date|date:"d E Y H:i:s"  }}</span>
+                        <p><b>Author: </b> <a href="{% url 'user-news' post.author %}">{{ post.author }}</a></p>
+                </div>
+            </div>
+            <a href="{% url 'news-detail' post.id %}" class="btn btn-outline-warning">Read more...</a>
+        </div>
+    {% endfor %}
+
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="btn btn-outline-warning">Start</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-warning">Next</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+                <button class="btn btn-warning">{{ num }}</button>
+            {% elif num > page_obj.number|add:'-3' and  num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}" class="btn btn-outline-warning">{{ num }}</a>
+                <a href="?page="></a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-warning">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-warning">Last</a>
+        {% endif %}
+
+    {% endif %}
+
+{% endblock main_section %}
+
+
+{% block aside_news_section %}
+    <h3><b>TOP films and serials for programers</b></h3>
+    <img src="https://i.redd.it/auvi7ijfursy.png" class="img-thumbnail">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi architecto consectetur consequuntur delectus ducimus eligendi error itaque repudiandae similique veritatis. Dignissimos expedita, fugiat magnam necessitatibus recusandae sit velit voluptatum! Adipisci aspernatur blanditiis deserunt esse, et incidunt itaque laboriosam libero minus nam nostrum odit porro quae quaerat quia reiciendis suscipit veniam.</p>
+    <a href="https://tproger.ru/digest/films/" target="_blank">
+        <button class="btn btn-warning">Review</button>
+    </a>
+{% endblock aside_news_section%}

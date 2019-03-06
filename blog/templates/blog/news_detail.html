@@ -1,0 +1,40 @@
+{% extends 'blog/main.html' %}
+
+{% block main_section %}
+    <h2>Main page</h2>
+        <div class="alert alert-light">
+            <a href="{% url 'blog-home' %}">Go Back</a>
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.text | safe }}</p>
+            <div class="row">
+                <div>
+                    {% if post.author.profile.img %}
+                        <img src="{{ post.author.profile.img.url }}" alt="{{ post.author }}" class="user_image">
+                     {% else %}
+                        <img src="/pictures/default.jpg" alt="{{ post.author }}" class="user_image">
+                    {% endif %}
+                </div>
+                <div class="mt-2">
+                    <span class="text-muted">{{ post.date|date:"d E Y H:i:s"  }}</span>
+                        <p><b>Author: </b> <a href="{% url 'user-news' post.author %}">{{ post.author }}</a></p>
+                </div>
+            </div>
+            {% if object.author == user %}
+                <hr>
+                <a href="{% url 'news-update' object.id %}" class="btn btn-info">Update</a>
+                <a href="{% url 'news-delete' object.id %}" class="btn btn-danger">Delete</a>
+            {% else %}
+
+            {% endif %}
+        </div>
+{% endblock main_section %}
+
+
+{% block aside_news_section %}
+    <h3><b>TOP films and serials for programers</b></h3>
+    <img src="https://i.redd.it/auvi7ijfursy.png" class="img-thumbnail">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi architecto consectetur consequuntur delectus ducimus eligendi error itaque repudiandae similique veritatis. Dignissimos expedita, fugiat magnam necessitatibus recusandae sit velit voluptatum! Adipisci aspernatur blanditiis deserunt esse, et incidunt itaque laboriosam libero minus nam nostrum odit porro quae quaerat quia reiciendis suscipit veniam.</p>
+    <a href="https://tproger.ru/digest/films/" target="_blank">
+        <button class="btn btn-warning">Review</button>
+    </a>
+{% endblock aside_news_section%}
